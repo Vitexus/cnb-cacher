@@ -1,14 +1,16 @@
 mod currency;
 
-use actix_web::{web, HttpResponse, Responder};
+use actix_web::web;
 
-pub fn configure_routes(cfg: &mut web::ServiceConfig) {
+use crate::handlers::currency::{get_today_currency, get_yesterday_currency};
+
+pub fn init_routes(cfg: &mut web::ServiceConfig) {
     cfg.service(
-        web::resource("/today/{currency_code}.json")
-            .route(web::get().to(currency::get_today_currency)),
-    )
-    .service(
-        web::resource("/yesterday/{currency_code}.json")
-            .route(web::get().to(currency::get_yesterday_currency)),
+        web::resource("/today/{CURRENCY_CODE}.json")
+            .route(web::get().to(get_today_currency)),
+    );
+    cfg.service(
+        web::resource("/yesterday/{CURRENCY_CODE}.json")
+            .route(web::get().to(get_yesterday_currency)),
     );
 }
